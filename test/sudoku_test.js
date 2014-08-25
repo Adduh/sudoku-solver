@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('chai').assert,
     u = 0,
     SudokuSolver = require('../sudoku'),
@@ -59,19 +61,34 @@ describe('sudoko.js', function() {
     });
 
     describe('possibleValues()', function() {
-        // only row and col check first
         it('returns the value for a solved field', function() {
-            var possibleValues = sudokuSolver.possibleValues(0, 8);
+            var possibleValues = sudokuSolver.possibleValuesOfCell(0, 8);
             assert.deepEqual(possibleValues, 2);
         });
 
         it('returns only possible values from row and line', function() {
-            var possibleValues = sudokuSolver.possibleValues(0, 0);
-            assert.deepEqual(possibleValues, [1, 3, 4, 9]);
+            var possibleValues = sudokuSolver.possibleValuesOfCell(0, 0);
+            assert.deepEqual(possibleValues, [1, 3]);
         });
     });
 
+    describe('solveCell()', function() {
+        it('returns true if it is already known', function() {
+            var solved = sudokuSolver.solveCell(0, 8);
+            assert.equal(solved, true);
+        });
 
+        it('returns false if it cannot be solved yet', function() {
+            var solved = sudokuSolver.solveCell(0, 0);
+            assert.equal(solved, false);
+        });
+
+        it('solves the cell if only one possibility', function() {
+            var solved = sudokuSolver.solveCell(8, 1);
+            assert.equal(solved, true);
+            assert.equal(sudokuSolver.sudoku[8][1], 4);
+        });
+    });
 });
 
 
