@@ -3,7 +3,7 @@
 var assert = require('chai').assert,
     u = 0,
     SudokuSolver = require('../sudoku'),
-    unsolvedSudoku = [
+    given = [
         [u, u, u, u, u, 6, u, u, 2],
         [7, 6 ,2, 8, 5, u, u, u, 4],
         [5, 9, 4, u, u, u, u, 6, u],
@@ -11,11 +11,9 @@ var assert = require('chai').assert,
         [u, u, u, u, 8, u, u, u, u],
         [u, 7, u, 9, u, u, u, u, u],
         [u, u, u, u, u, 8, 9, u, 5],
-
         [8, 5, 3, 6, 2, u, u, 4, u],
-        [2, u, u, u, u, 1, 8, u, u],
-    ],
-    solvedSudoku = [
+        [2, u, u, u, u, 1, 8, u, u]],
+    solved = [
         [1, 3, 8, 4, 9, 6, 5, 7, 2],
         [7, 6 ,2, 8, 5, 3, 1, 9, 4],
         [5, 9, 4, 7, 1, 2, 3, 6, 8],
@@ -24,19 +22,51 @@ var assert = require('chai').assert,
         [4, 7, 1, 9, 6, 5, 2, 8, 3],
         [6, 1, 7, 3, 4, 8, 9, 2, 5],
         [8, 5, 3, 6, 2, 9, 7, 4, 1],
-        [2, 4, 9, 5, 7, 1, 8, 3, 6],
-    ];
+        [2, 4, 9, 5, 7, 1, 8, 3, 6]],
+    givenAmbiguous = [
+        [0, 0, 0, 0, 0, 6, 0, 0, 2],
+        [0, 6 ,2, 8, 5, 0, 0, 0, 4],
+        [5, 9, 4, 0, 0, 0, 0, 6, 0],
+        [0, 0, 0, 2, 0, 0, 6, 1, 0],
+        [0, 0, 0, 0, 8, 0, 0, 0, 0],
+        [0, 0, 0, 9, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 8, 9, 0, 5],
+        [8, 5, 0, 6, 2, 0, 0, 4, 0],
+        [2, 0, 0, 0, 0, 1, 8, 0, 0]],
+    solvedAmbiguous = [
+        [ 1, 7, 8, 4, 9, 6, 5, 3, 2 ],
+        [ 3, 6, 2, 8, 5, 7, 1, 9, 4 ],
+        [ 5, 9, 4, 3, 1, 2, 7, 6, 8 ],
+        [ 4, 8, 3, 2, 7, 5, 6, 1, 9 ],
+        [ 9, 2, 6, 1, 8, 3, 4, 5, 7 ],
+        [ 7, 1, 5, 9, 6, 4, 2, 8, 3 ],
+        [ 6, 3, 1, 7, 4, 8, 9, 2, 5 ],
+        [ 8, 5, 7, 6, 2, 9, 3, 4, 1 ],
+        [ 2, 4, 9, 5, 3, 1, 8, 7, 6 ]];
+
 
 describe('sudoko.js', function() {
     var sudokuSolver;
 
     beforeEach(function() {
-        sudokuSolver = new SudokuSolver(unsolvedSudoku);
+        sudokuSolver = new SudokuSolver(given);
     });
 
-    xit('solves the test sudoku', function() {
-        var result = sudokuSolver.solve();
-        assert.deepEqual(result, solvedSudoku);
+    it('solves the test sudoku', function(done) {
+        sudokuSolver.solve(0, 0, function(result) {
+            assert.deepEqual(result, solved);
+            done();
+        });
+    });
+
+    describe('amibguous sudoku', function() {
+        xit('terminates on ambiguous sudoku', function(done) {
+            sudokuSolver = new SudokuSolver(givenAmbiguous);
+            sudokuSolver.solve(0, 0, function(result) {
+                assert.deepEqual(result, solvedAmbiguous);
+                done();
+            });
+        });
     });
 
     describe('knownValuesForRow()', function() {
@@ -62,29 +92,29 @@ describe('sudoko.js', function() {
 
     describe('possibleValues()', function() {
         it('returns the value for a solved field', function() {
-            var possibleValues = sudokuSolver.possibleValuesOfCell(0, 8);
+            var possibleValues = sudokuSolver.possibleValues(0, 8);
             assert.deepEqual(possibleValues, 2);
         });
 
         it('returns only possible values from row and line', function() {
-            var possibleValues = sudokuSolver.possibleValuesOfCell(0, 0);
+            var possibleValues = sudokuSolver.possibleValues(0, 0);
             assert.deepEqual(possibleValues, [1, 3]);
         });
     });
 
-    describe('solveCell()', function() {
+    describe('solveNakedSingle()', function() {
         it('returns true if it is already known', function() {
-            var solved = sudokuSolver.solveCell(0, 8);
+            var solved = sudokuSolver.solveNakedSingle(0, 8);
             assert.equal(solved, true);
         });
 
         it('returns false if it cannot be solved yet', function() {
-            var solved = sudokuSolver.solveCell(0, 0);
+            var solved = sudokuSolver.solveNakedSingle(0, 0);
             assert.equal(solved, false);
         });
 
         it('solves the cell if only one possibility', function() {
-            var solved = sudokuSolver.solveCell(8, 1);
+            var solved = sudokuSolver.solveNakedSingle(8, 1);
             assert.equal(solved, true);
             assert.equal(sudokuSolver.sudoku[8][1], 4);
         });
