@@ -7,7 +7,7 @@ var SudokuSolver = function(given) {
     this.sudoku = given;
 };
 
-SudokuSolver.prototype.solve = function(x, y, callback) {
+SudokuSolver.prototype.solve = function(x, y) {
     var that = this;
     if (x === 9) {
         x = 0;
@@ -15,21 +15,24 @@ SudokuSolver.prototype.solve = function(x, y, callback) {
     }
 
     if (y === 9) {
-        var result = callback(this.sudoku);
-        callback = function() {};
-        return result;
+        return true;
     } else if (this.sudoku[x][y] === 0) {
-        this.possibleValues(x, y).forEach(function(value) {
-            that.sudoku[x][y] = value;
-            if (that.solve(x + 1, y, callback)) {
-                return true;
-            }
-            that.sudoku[x][y] = 0;
-            return false;
+        var result = false,
+            poss = this.possibleValues(x, y);
 
-        });
+        for(var i = 0, len = poss.length; i < len; ++i) {
+            var value = poss[i];
+            that.sudoku[x][y] = value;
+            if (that.solve(x + 1, y)) {
+                result = true;
+                break;
+            }
+        };
+        if (!result) that.sudoku[x][y] = 0;
+        return result;
     } else {
-        that.solve(x + 1, y, callback);
+        return that.solve(x + 1, y);
+
     }
 };
 

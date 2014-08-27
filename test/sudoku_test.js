@@ -2,70 +2,65 @@
 
 var assert = require('chai').assert,
     u = 0,
-    SudokuSolver = require('../sudoku'),
-    given = [
-        [u, u, u, u, u, 6, u, u, 2],
-        [7, 6 ,2, 8, 5, u, u, u, 4],
-        [5, 9, 4, u, u, u, u, 6, u],
-        [u, u, u, 2, u, u, 6, 1, u],
-        [u, u, u, u, 8, u, u, u, u],
-        [u, 7, u, 9, u, u, u, u, u],
-        [u, u, u, u, u, 8, 9, u, 5],
-        [8, 5, 3, 6, 2, u, u, 4, u],
-        [2, u, u, u, u, 1, 8, u, u]],
-    solved = [
-        [1, 3, 8, 4, 9, 6, 5, 7, 2],
-        [7, 6 ,2, 8, 5, 3, 1, 9, 4],
-        [5, 9, 4, 7, 1, 2, 3, 6, 8],
-        [9, 8, 5, 2, 3, 4, 6, 1, 7],
-        [3, 2, 6, 1, 8, 7, 4, 5, 9],
-        [4, 7, 1, 9, 6, 5, 2, 8, 3],
-        [6, 1, 7, 3, 4, 8, 9, 2, 5],
-        [8, 5, 3, 6, 2, 9, 7, 4, 1],
-        [2, 4, 9, 5, 7, 1, 8, 3, 6]],
-    givenAmbiguous = [
-        [0, 0, 0, 0, 0, 6, 0, 0, 2],
-        [0, 6 ,2, 8, 5, 0, 0, 0, 4],
-        [5, 9, 4, 0, 0, 0, 0, 6, 0],
-        [0, 0, 0, 2, 0, 0, 6, 1, 0],
-        [0, 0, 0, 0, 8, 0, 0, 0, 0],
-        [0, 0, 0, 9, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 8, 9, 0, 5],
-        [8, 5, 0, 6, 2, 0, 0, 4, 0],
-        [2, 0, 0, 0, 0, 1, 8, 0, 0]],
-    solvedAmbiguous = [
-        [ 1, 7, 8, 4, 9, 6, 5, 3, 2 ],
-        [ 3, 6, 2, 8, 5, 7, 1, 9, 4 ],
-        [ 5, 9, 4, 3, 1, 2, 7, 6, 8 ],
-        [ 4, 8, 3, 2, 7, 5, 6, 1, 9 ],
-        [ 9, 2, 6, 1, 8, 3, 4, 5, 7 ],
-        [ 7, 1, 5, 9, 6, 4, 2, 8, 3 ],
-        [ 6, 3, 1, 7, 4, 8, 9, 2, 5 ],
-        [ 8, 5, 7, 6, 2, 9, 3, 4, 1 ],
-        [ 2, 4, 9, 5, 3, 1, 8, 7, 6 ]];
-
+    SudokuSolver = require('../sudoku');
 
 describe('sudoko.js', function() {
-    var sudokuSolver;
+    var sudokuSolver, given, solved;
 
     beforeEach(function() {
+        given = [
+            [u, u, u, u, u, 6, u, u, 2],
+            [7, 6 ,2, 8, 5, u, u, u, 4],
+            [5, 9, 4, u, u, u, u, 6, u],
+            [u, u, u, 2, u, u, 6, 1, u],
+            [u, u, u, u, 8, u, u, u, u],
+            [u, 7, u, 9, u, u, u, u, u],
+            [u, u, u, u, u, 8, 9, u, 5],
+            [8, 5, 3, 6, 2, u, u, 4, u],
+            [2, u, u, u, u, 1, 8, u, u]];
+        solved = [
+            [1, 3, 8, 4, 9, 6, 5, 7, 2],
+            [7, 6 ,2, 8, 5, 3, 1, 9, 4],
+            [5, 9, 4, 7, 1, 2, 3, 6, 8],
+            [9, 8, 5, 2, 3, 4, 6, 1, 7],
+            [3, 2, 6, 1, 8, 7, 4, 5, 9],
+            [4, 7, 1, 9, 6, 5, 2, 8, 3],
+            [6, 1, 7, 3, 4, 8, 9, 2, 5],
+            [8, 5, 3, 6, 2, 9, 7, 4, 1],
+            [2, 4, 9, 5, 7, 1, 8, 3, 6]];
         sudokuSolver = new SudokuSolver(given);
     });
 
-    it('solves the test sudoku', function(done) {
-        sudokuSolver.solve(0, 0, function(result) {
-            assert.deepEqual(result, solved);
-            done();
-        });
+    it('solves the test sudoku', function() {
+        assert.ok(sudokuSolver.solve(0, 0));
+        assert.deepEqual(sudokuSolver.sudoku, solved);
     });
 
     describe('amibguous sudoku', function() {
-        xit('terminates on ambiguous sudoku', function(done) {
+        it('terminates on ambiguous sudoku', function() {
+            var givenAmbiguous = [
+                    [u, u, u, u, u, 6, u, u, 2],
+                    [u, 6 ,2, 8, 5, u, u, u, 4],
+                    [5, 9, 4, u, u, u, u, 6, u],
+                    [u, u, u, 2, u, u, 6, 1, u],
+                    [u, u, u, u, 8, u, u, u, u],
+                    [u, u, u, 9, u, u, u, u, u],
+                    [u, u, u, u, u, 8, 9, u, 5],
+                    [8, 5, u, 6, 2, u, u, 4, u],
+                    [2, u, u, u, u, 1, 8, u, u]],
+                solvedAmbiguous = [
+                    [ 1, 7, 8, 4, 9, 6, 5, 3, 2 ],
+                    [ 3, 6, 2, 8, 5, 7, 1, 9, 4 ],
+                    [ 5, 9, 4, 3, 1, 2, 7, 6, 8 ],
+                    [ 4, 8, 3, 2, 7, 5, 6, 1, 9 ],
+                    [ 9, 2, 6, 1, 8, 3, 4, 5, 7 ],
+                    [ 7, 1, 5, 9, 6, 4, 2, 8, 3 ],
+                    [ 6, 3, 1, 7, 4, 8, 9, 2, 5 ],
+                    [ 8, 5, 7, 6, 2, 9, 3, 4, 1 ],
+                    [ 2, 4, 9, 5, 3, 1, 8, 7, 6 ]];
             sudokuSolver = new SudokuSolver(givenAmbiguous);
-            sudokuSolver.solve(0, 0, function(result) {
-                assert.deepEqual(result, solvedAmbiguous);
-                done();
-            });
+            assert.ok(sudokuSolver.solve(0, 0));
+            assert.deepEqual(sudokuSolver.sudoku, solvedAmbiguous);
         });
     });
 
