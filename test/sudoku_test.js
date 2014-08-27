@@ -79,12 +79,12 @@ describe('sudoko.js', function() {
     describe('possibleValues()', function() {
         it('returns the value for a solved field', function() {
             var possibleValues = sudokuSolver.possibleValues(0, 8);
-            assert.deepEqual(possibleValues, 2);
+            assert.equal(possibleValues, 2);
         });
 
         it('returns only possible values from row and line', function() {
             var possibleValues = sudokuSolver.possibleValues(0, 0);
-            assert.deepEqual(possibleValues, [1, 3]);
+            assert.sameMembers(possibleValues, [1, 3]);
         });
     });
 
@@ -100,7 +100,7 @@ describe('sudoko.js', function() {
         });
 
         it('solves the cell if only one possibility', function() {
-            var solved = sudokuSolver.solveNakedSingle(8, 1);
+            var solved = sudokuSolver.solveNakedSingle(1, 8);
             assert.equal(solved, true);
             assert.equal(sudokuSolver.sudoku[1][8], 4);
         });
