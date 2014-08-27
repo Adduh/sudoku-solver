@@ -3,7 +3,7 @@
 var assert = require('chai').assert,
     _ = require('underscore'),
     u = 0,
-    SudokuSolver = require('../sudoku');
+    SudokuSolver = require('../lib/sudoku');
 
 describe('sudoko.js', function() {
     var sudokuSolver, given, solved;
