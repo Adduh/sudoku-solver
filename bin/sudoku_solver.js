@@ -45,6 +45,7 @@ var SudokuSolver = require('../sudoku'),
          [5, 0, 0, 0, 0, 0, 0, 7, 3],
          [0, 0, 2, 0, 1, 0, 0, 0, 0],
          [0, 0, 0, 0, 4, 0, 0, 0, 9]];
-var sudoku = new SudokuSolver(given);
-var a = sudoku.solve(0, 0);
-console.log(a, sudoku.sudoku);
+var sudoku = new SudokuSolver(reallyHard);
+var result = sudoku.solve(0, 0);
+console.log(result);
+console.log(sudoku.sudoku);

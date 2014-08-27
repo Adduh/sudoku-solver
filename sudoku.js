@@ -1,97 +1,110 @@
 'use strict';
 
-var _ = require('underscore');
 var a1to9 = [1, 2, 3, 4 , 5 , 6, 7, 8, 9];
 
 var SudokuSolver = function(given) {
     this.sudoku = given;
 };
 
-SudokuSolver.prototype.solve = function(x, y) {
+SudokuSolver.prototype.solve = function(row, col) {
+
     var that = this;
-    if (x === 9) {
-        x = 0;
-        y++;
+    if (col === 9) {
+        col = 0;
+        row++;
+        // console.log("\x1B[1;1H");
+        // console.log(this.sudoku);
     }
 
-    if (y === 9) {
+    if (row === 9) {
         return true;
-    } else if (this.sudoku[x][y] === 0) {
+    } else if (this.sudoku[row][col] === 0) {
         var result = false,
-            poss = this.possibleValues(x, y);
+            possibleValues = this.possibleValues(row, col);
 
-        for(var i = 0, len = poss.length; i < len; ++i) {
-            var value = poss[i];
-            that.sudoku[x][y] = value;
-            if (that.solve(x + 1, y)) {
+        for(var i = 0, len = possibleValues.length; i < len; ++i) {
+            that.sudoku[row][col] = possibleValues[i];
+            if (that.solve(row, col + 1)) {
                 result = true;
                 break;
             }
         };
-        if (!result) that.sudoku[x][y] = 0;
+        if (!result) that.sudoku[row][col] = 0;
         return result;
     } else {
-        return that.solve(x + 1, y);
+        return that.solve(row, col + 1);
 
     }
 };
 
-SudokuSolver.prototype.solveNakedSingle = function(x, y) {
-    var possibleValues = this.possibleValues(x, y);
+SudokuSolver.prototype.solveNakedSingle = function(row, col) {
+    var possibleValues = this.possibleValues(row, col);
     if (Array.isArray(possibleValues) && possibleValues.length > 1) {
         return false;
     } else {
         if (Array.isArray(possibleValues)) {
-            this.sudoku[x][y] = possibleValues[0];
+            this.sudoku[row][col] = possibleValues[0];
         }
         return true;
     }
 };
 
-SudokuSolver.prototype.possibleValues = function(x, y) {
+SudokuSolver.prototype.possibleValues = function(row, col) {
     var that = this, result;
-    if (this.sudoku[x][y] !== 0) {
-        result = that.sudoku[x][y];
+    if (this.sudoku[row][col] !== 0) {
+        result = that.sudoku[row][col];
     } else {
-        var unavailableValues = _.union(
-            this.knownValuesForRow(x),
-            this.knownValuesForCol(y),
-            this.knownValuesForBlock(Math.floor(x/3), Math.floor(y/3)));
-        result = _.difference(a1to9, unavailableValues);
+        var unavailableValues = this.knownValuesForRow(row).concat(
+            this.knownValuesForCol(col)).concat(
+            this.knownValuesForBlock(Math.floor(row/3), Math.floor(col/3))),
+            foo = [], foundAvailableValue;
+        for(var j = 1; j <= 9; j++) {
+            foundAvailableValue = false;
+            for(var i = 0, len = unavailableValues.length; i < len; i++) {
+                if (unavailableValues[i] === j) {
+                    foundAvailableValue = true;
+                    break;
+                }
+            }
+            if (!foundAvailableValue) {
+                foo.push(j);
+            }
+        }
+        result = foo;
     }
     return result;
 };
 
-SudokuSolver.prototype.knownValuesForRow = function(x) {
+SudokuSolver.prototype.knownValuesForRow = function(row) {
     var result = [];
-    for (var y = 0; y < 9; y++) {
-        if (this.sudoku[x][y] !== 0) {
-            result.push(this.sudoku[x][y]);
+    for (var col = 0; col < 9; col++) {
+        if (this.sudoku[row][col] !== 0) {
+            result.push(this.sudoku[row][col]);
         }
     };
-    return result.sort();
+    return result;
 };
 
-SudokuSolver.prototype.knownValuesForCol = function(y) {
+SudokuSolver.prototype.knownValuesForCol = function(col) {
     var result = [];
-    for (var x = 0; x < 9; x++) {
-        if (this.sudoku[x][y] !== 0) {
-            result.push(this.sudoku[x][y]);
+    for (var row = 0; row < 9; row++) {
+        if (this.sudoku[row][col] !== 0) {
+            result.push(this.sudoku[row][col]);
         }
     };
-    return result.sort();
+    return result;
 };
 
-SudokuSolver.prototype.knownValuesForBlock = function(blockX, blockY) {
+SudokuSolver.prototype.knownValuesForBlock = function(blockRow, blockCol) {
     var result = [];
-    for (var x = blockX * 3; x < (blockX + 1) * 3; x++) {
-        for (var y = blockY * 3; y < (blockY + 1) * 3; y++) {
-            if (this.sudoku[x][y] !== 0) {
-                result.push(this.sudoku[x][y]);
+    for (var row = blockRow * 3; row < (blockRow + 1) * 3; row++) {
+        for (var col = blockCol * 3; col < (blockCol + 1) * 3; col++) {
+            if (this.sudoku[row][col] !== 0) {
+                result.push(this.sudoku[row][col]);
             }
         };
     };
-    return result.sort();
+    return result;
 };
 
 module.exports = SudokuSolver;
