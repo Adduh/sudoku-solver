@@ -34,7 +34,8 @@ describe('sudoko.js', function() {
 
     it('solves the test sudoku', function() {
         assert.ok(sudokuSolver.solve(0, 0), sudokuSolver.sudoku);
-        assert.deepEqual(sudokuSolver.sudoku, solved);
+        console.log(sudokuSolver.solution);
+        assert.deepEqual(sudokuSolver.solution, solved);
     });
 
     describe('amibguous sudoku', function() {
@@ -51,27 +52,27 @@ describe('sudoko.js', function() {
                     [2, u, u, u, u, 1, 8, u, u]];
             sudokuSolver = new SudokuSolver(givenAmbiguous);
             assert.ok(sudokuSolver.solve(0, 0));
-            assert.notInclude(_.flatten(sudokuSolver.sudoku), 0);
+            assert.notInclude(_.flatten(sudokuSolver.solution), 0);
         });
     });
 
     describe('knownValuesForRow()', function() {
         it('returns all known values of row', function() {
-            var result = sudokuSolver.knownValuesForRow(0);
+            var result = sudokuSolver.knownValuesForRow(0, []);
             assert.sameMembers(result, [2, 6]);
         });
     });
 
     describe('knownValuesForCol()', function() {
         it('returns all known values of column', function() {
-            var result = sudokuSolver.knownValuesForCol(0);
+            var result = sudokuSolver.knownValuesForCol(0, []);
             assert.sameMembers(result, [2, 5, 7, 8]);
         });
     });
 
     describe('knownValuesForBlock()', function() {
         it('returns all known values of block', function() {
-            var result = sudokuSolver.knownValuesForBlock(0, 0);
+            var result = sudokuSolver.knownValuesForBlock(0, 0, []);
             assert.sameMembers(result, [2, 4, 5, 6, 7, 9]);
         });
     });
@@ -102,7 +103,7 @@ describe('sudoko.js', function() {
         it('solves the cell if only one possibility', function() {
             var solved = sudokuSolver.solveNakedSingle(1, 8);
             assert.equal(solved, true);
-            assert.equal(sudokuSolver.sudoku[1][8], 4);
+            assert.equal(sudokuSolver.getCell(1, 8), 4);
         });
     });
 });
