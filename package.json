@@ -1,0 +1,27 @@
+{
+  "name": "sudoku-solver",
+  "description": "Solves sudokus with logical and backtrack methods",
+  "version": "0.1.0",
+  "contributors": [
+    {
+      "name": "Artur Taube",
+      "email": "adduh@web.de"
+    }
+  ],
+  "dependencies": {
+    "underscore": "^1.7.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.21.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Adduh/sudoku-solver.git"
+  },
+  "homepage": "https://github.com/Adduh/sudoku-solver",
+  "scripts": {
+    "start": "node sudoku_solver.js",
+    "test": "mocha test"
+  }
+}
