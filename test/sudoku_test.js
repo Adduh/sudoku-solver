@@ -57,21 +57,24 @@ describe('sudoko.js', function() {
 
     describe('knownValuesForRow()', function() {
         it('returns all known values of row', function() {
-            var result = sudokuSolver.knownValuesForRow(0, []);
+            var result = [];
+            sudokuSolver.knownValuesForRow(0, result);
             assert.sameMembers(result, [2, 6]);
         });
     });
 
     describe('knownValuesForCol()', function() {
         it('returns all known values of column', function() {
-            var result = sudokuSolver.knownValuesForCol(0, []);
+            var result = [];
+            sudokuSolver.knownValuesForCol(0, result);
             assert.sameMembers(result, [2, 5, 7, 8]);
         });
     });
 
     describe('knownValuesForBlock()', function() {
         it('returns all known values of block', function() {
-            var result = sudokuSolver.knownValuesForBlock(0, 0, []);
+            var result = [];
+            sudokuSolver.knownValuesForBlock(0, 0, result);
             assert.sameMembers(result, [2, 4, 5, 6, 7, 9]);
         });
     });

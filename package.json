@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "chai": "^1.9.1",
+    "jshint": "^2.5.5",
+    "jshint-stylish": "^0.4.0",
     "mocha": "^1.21.4"
   },
   "repository": {
@@ -22,6 +24,7 @@
   "homepage": "https://github.com/Adduh/sudoku-solver",
   "scripts": {
     "start": "node sudoku_solver.js",
-    "test": "mocha test"
+    "test": "mocha test",
+    "check": "jshint --reporter node_modules/jshint-stylish/stylish.js lib/ test/ ./*.js"
   }
 }
