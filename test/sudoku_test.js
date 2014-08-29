@@ -195,7 +195,7 @@ describe('sudoko.js', function() {
             it('solves hidden singles in first line', function() {
                 sudokuSolver.solveHiddenSinglesForRow(1);
                 var row = sudokuSolver.getRow(1);
-                assert.deepEqual([0, 0, 0, 1, 0, 3, 0, 8, 5], row);
+                assert.deepEqual([u, u, u, 1, u, 3, u, 8, 5], row);
             });
         });
 
@@ -211,7 +211,7 @@ describe('sudoko.js', function() {
             it('solves hidden singles in first line', function() {
                 sudokuSolver.solveHiddenSinglesForCol(4);
                 var col = sudokuSolver.getCol(4);
-                assert.deepEqual([5, 0, 2, 0, 0, 0, 0, 1, 4], col);
+                assert.deepEqual([5, u, 2, u, u, u, u, 1, 4], col);
             });
         });
 
@@ -249,15 +249,17 @@ describe('sudoko.js', function() {
             it('solves some hidden singles', function() {
                 sudokuSolver.solveHiddenSingles();
                 assert.deepEqual(sudokuSolver.getField(), [
-                    [0, 0, 0, 0, 5, 0, 0, 0, 1],
-                    [0, 0, 0, 1, 0, 3, 0, 8, 5],
-                    [0, 5, 1, 0, 2, 0, 0, 0, 0],
-                    [1, 0, 0, 5, 0, 7, 0, 0, 0],
-                    [0, 0, 4, 0, 0, 0, 1, 5, 0],
-                    [0, 9, 5, 4, 0, 1, 0, 0, 0],
-                    [5, 1, 0, 0, 0, 0, 0, 7, 3],
-                    [0, 0, 2, 0, 1, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 4, 0, 0, 1, 9]]);
+                    [u, u, u,  u, 5, u,  u, u, 1],
+                    [u, u, u,  1, u, 3,  u, 8, 5],
+                    [u, 5, 1,  u, 2, u,  u, u, u],
+
+                    [1, u, u,  5, u, 7,  u, u, u],
+                    [u, u, 4,  u, u, u,  1, 5, u],
+                    [u, 9, 5,  4, u, 1,  u, u, u],
+
+                    [5, 1, u,  u, u, u,  u, 7, 3],
+                    [u, u, 2,  u, 1, u,  u, u, u],
+                    [u, u, u,  u, 4, u,  u, 1, 9]]);
             });
         });
     });
@@ -273,17 +275,17 @@ describe('sudoko.js', function() {
             sudokuSolver = new SudokuSolver(hard);
             assert(!sudokuSolver.solveLogical());
             assert.deepEqual(sudokuSolver.getField(), [
-                [0, 0, 0,  7, 2, 4,  0, 0, 5],
-                [0, 2, 0,  0, 1, 0,  0, 7, 0],
-                [0, 0, 0,  0, 8, 0,  0, 0, 2],
+                [u, u, u,  7, 2, 4,  u, u, 5],
+                [u, 2, u,  u, 1, u,  u, 7, u],
+                [u, u, u,  u, 8, u,  u, u, 2],
 
-                [0, 9, 0,  0, 3, 6,  2, 5, 0],
-                [6, 0, 2,  0, 7, 0,  0, 0, 8],
-                [0, 5, 3,  2, 4, 0,  0, 1, 0],
+                [u, 9, u,  u, 3, 6,  2, 5, u],
+                [6, u, 2,  u, 7, u,  u, u, 8],
+                [u, 5, 3,  2, 4, u,  u, 1, u],
 
-                [4, 0, 0,  0, 9, 0,  0, 2, 0],
-                [0, 3, 0,  0, 6, 2,  0, 9, 0],
-                [2, 0, 9,  4, 5, 7,  0, 0, 0]]);
+                [4, u, u,  u, 9, u,  u, 2, u],
+                [u, 3, u,  u, 6, 2,  u, 9, u],
+                [2, u, 9,  4, 5, 7,  u, u, u]]);
         });
     });
 });
