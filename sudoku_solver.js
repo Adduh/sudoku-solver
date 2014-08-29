@@ -46,4 +46,4 @@ var SudokuSolver = require('./lib/sudoku'),
 var sudoku = new SudokuSolver(reallyHard);
 //sudoku.solveBacktrack(0, 0);
  sudoku.solveLogical();
-// sudoku.show();
+sudoku.show();

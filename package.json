@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Adduh/sudoku-solver",
   "scripts": {
-    "start": "node sudoku_solver.js",
+    "start": "time node sudoku_solver.js",
     "test": "mocha test",
     "check": "jshint --reporter node_modules/jshint-stylish/stylish.js lib/ test/ ./*.js"
   }
